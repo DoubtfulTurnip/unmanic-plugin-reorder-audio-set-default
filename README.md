@@ -23,27 +23,27 @@ This plugin is particularly useful for anime collections or other media where:
 
 ## Installation
 
-### Option 1: Install from Git Repository
+⚠️ **Important**: This repository cannot be added via Unmanic's "Add Repository" feature because it's structured as a single plugin, not a plugin repository. See [INSTALLATION.md](INSTALLATION.md) for detailed instructions.
 
-1. In Unmanic, go to Settings → Plugins → Install Plugin From Repo
-2. Enter the URL of this repository
-3. Click Install
+### Quick Install (Manual)
 
-### Option 2: Manual Installation
-
-1. Clone this repository:
+1. SSH into your Unmanic server/container
+2. Navigate to your Unmanic plugins directory (usually `/config/plugins`)
+3. Clone the repository:
    ```bash
-   git clone --recursive https://github.com/yourusername/unmanic-plugin-reorder-audio-set-default.git
+   git clone --recursive https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default.git reorder_audio_streams_by_language_set_default
    ```
-   Note: The `--recursive` flag is important to clone the ffmpeg helper submodule
+   **Note**: Directory name must be `reorder_audio_streams_by_language_set_default` (matches plugin ID)
 
-2. If you already cloned without `--recursive`, initialize the submodule:
+4. Install dependencies (if not auto-installed by Unmanic):
    ```bash
-   cd unmanic-plugin-reorder-audio-set-default
-   git submodule update --init --recursive
+   pip3 install -r reorder_audio_streams_by_language_set_default/requirements.txt
    ```
 
-3. Copy the plugin directory to your Unmanic plugins folder
+5. Restart Unmanic
+6. Enable the plugin in Settings → Plugins
+
+**See [INSTALLATION.md](INSTALLATION.md) for detailed Docker instructions and troubleshooting.**
 
 ## Configuration
 
