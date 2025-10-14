@@ -5,7 +5,7 @@
         2
     ],
     "description": "Re-order audio streams by language AND set default flag. Processes files even when order is correct but default flag is missing.",
-    "icon": "https://raw.githubusercontent.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default/master/source/reorder_audio_streams_by_language_set_default/icon.png",
+    "icon": "https://raw.githubusercontent.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default/master/icon.png",
     "id": "reorder_audio_streams_by_language_set_default",
     "name": "Re-order audio streams by language and set default",
     "platform": [
