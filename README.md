@@ -23,25 +23,35 @@ This plugin is particularly useful for anime collections or other media where:
 
 ## Installation
 
-⚠️ **Important**: This repository cannot be added via Unmanic's "Add Repository" feature because it's structured as a single plugin, not a plugin repository. See [INSTALLATION.md](INSTALLATION.md) for detailed instructions.
+### Option 1: Install via Unmanic UI (Recommended)
 
-### Quick Install (Manual)
+1. In Unmanic, go to **Settings** → **Plugins** → **Install Plugin from Repo**
+2. Click **ADD REPOSITORY**
+3. Enter the repository URL:
+   ```
+   https://raw.githubusercontent.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default/repo/repo.json
+   ```
+4. Click **SAVE**
+5. Find **"Re-order audio streams by language and set default"** in the plugin list
+6. Click **INSTALL**
+7. Enable and configure the plugin
+
+### Option 2: Manual Installation
 
 1. SSH into your Unmanic server/container
 2. Navigate to your Unmanic plugins directory (usually `/config/plugins`)
-3. Clone the repository:
+3. Clone the plugin from the source directory:
    ```bash
-   git clone --recursive https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default.git reorder_audio_streams_by_language_set_default
+   git clone --recursive https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default.git temp_clone
+   cd temp_clone
+   git submodule update --init --recursive
+   cp -r source/reorder_audio_streams_by_language_set_default /config/plugins/
+   cd ..
+   rm -rf temp_clone
    ```
-   **Note**: Directory name must be `reorder_audio_streams_by_language_set_default` (matches plugin ID)
 
-4. Install dependencies (if not auto-installed by Unmanic):
-   ```bash
-   pip3 install -r reorder_audio_streams_by_language_set_default/requirements.txt
-   ```
-
-5. Restart Unmanic
-6. Enable the plugin in Settings → Plugins
+4. Restart Unmanic
+5. Enable the plugin in Settings → Plugins
 
 **See [INSTALLATION.md](INSTALLATION.md) for detailed Docker instructions and troubleshooting.**
 

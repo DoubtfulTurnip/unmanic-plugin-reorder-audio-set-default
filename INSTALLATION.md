@@ -1,47 +1,92 @@
 # Installation Instructions
 
-## Issue with Repository Installation
+## ✅ Repository Now Supports UI Installation!
 
-The "New repository failed to save" error occurs because this repository is structured as a **single plugin**, not a **plugin repository**.
+This repository has been restructured as a proper Unmanic plugin repository. You can now install it via the Unmanic UI!
 
-Unmanic's "Add Repository" feature expects a plugin repository (like the official unmanic-plugins repo) with multiple plugins, a `repo.json` file, and specific structure. Our repository contains just one plugin.
+## Method 1: Install via Unmanic UI (Recommended)
 
-## Manual Installation (Recommended)
+This is the easiest method and allows automatic updates.
 
-Follow these steps to install the plugin manually:
+### Step 1: Add the Repository
 
-### Step 1: Find Your Unmanic Plugins Directory
+1. Open Unmanic web UI
+2. Go to **Settings** → **Plugins**
+3. Click **Install Plugin from Repo** button
+4. Click **ADD REPOSITORY**
+5. Enter this URL:
+   ```
+   https://raw.githubusercontent.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default/repo/repo.json
+   ```
+6. Click **SAVE**
 
-Your Unmanic plugins directory is typically located at:
-- **Docker**: `/config/plugins` (inside the container) or your mapped config volume
-- **Bare metal**: `~/.unmanic/plugins` or check your Unmanic config
+### Step 2: Install the Plugin
 
-### Step 2: Clone the Plugin
+1. The plugin **"Re-order audio streams by language and set default"** should now appear in the available plugins list
+2. Click the **INSTALL** button next to it
+3. Wait for installation to complete
+
+### Step 3: Configure the Plugin
+
+1. Find the plugin in your installed plugins list
+2. Toggle it **ON** to enable it
+3. Click the **settings icon** (⚙️)
+4. Set **Search String** to `eng` or `en` (or your preferred language code)
+5. (Optional) Configure Radarr/Sonarr integration if needed
+6. Click **SAVE**
+
+### Step 4: Test
+
+1. Go to your Library
+2. Click **Scan** to test files
+3. Files with English audio first but missing default flag will now be processed!
+
+---
+
+## Method 2: Manual Installation
+
+If you prefer manual installation or the UI method doesn't work:
+
+### Step 1: Clone the Repository
 
 SSH into your server (or Docker container) and run:
 
 ```bash
-cd /path/to/unmanic/config/plugins
-git clone --recursive https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default.git reorder_audio_streams_by_language_set_default
+cd /tmp
+git clone --recursive https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default.git
+cd unmanic-plugin-reorder-audio-set-default
+git submodule update --init --recursive
 ```
 
-**Important**: The directory name must match the plugin ID: `reorder_audio_streams_by_language_set_default`
-
-### Step 3: Install Dependencies
+### Step 2: Copy Plugin to Unmanic Directory
 
 ```bash
-cd reorder_audio_streams_by_language_set_default
-pip3 install -r requirements.txt
+cp -r source/reorder_audio_streams_by_language_set_default /path/to/unmanic/config/plugins/
 ```
 
-Or if Unmanic runs in Docker, exec into the container first:
+**For Docker users**, exec into the container first:
 
 ```bash
+# Clone on host or inside container
 docker exec -it unmanic bash
-cd /config/plugins
-git clone --recursive https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default.git reorder_audio_streams_by_language_set_default
-pip3 install -r /config/plugins/reorder_audio_streams_by_language_set_default/requirements.txt
+
+# Inside container:
+cd /tmp
+git clone --recursive https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default.git
+cd unmanic-plugin-reorder-audio-set-default
+git submodule update --init --recursive
+cp -r source/reorder_audio_streams_by_language_set_default /config/plugins/
+cd /
+rm -rf /tmp/unmanic-plugin-reorder-audio-set-default
 exit
+```
+
+### Step 3: Install Dependencies (Usually Automatic)
+
+Unmanic typically installs dependencies automatically. If needed manually:
+
+```bash
+pip3 install -r /config/plugins/reorder_audio_streams_by_language_set_default/requirements.txt
 ```
 
 ### Step 4: Restart Unmanic
@@ -61,7 +106,7 @@ sudo systemctl restart unmanic
 1. Open Unmanic web UI
 2. Go to **Settings** → **Plugins**
 3. Find **"Re-order audio streams by language and set default"**
-4. Click the toggle to enable it
+4. Toggle it **ON**
 5. Click the settings icon to configure:
    - Set **Search String** to `eng` or `en`
    - (Optional) Configure Radarr/Sonarr integration
@@ -72,16 +117,7 @@ sudo systemctl restart unmanic
 2. Click **Scan** to test files
 3. The plugin will now process files even when English audio is first but the default flag is missing
 
-## Alternative: Create a Plugin Repository (Future Enhancement)
-
-If you want to install via the UI "Add Repository" feature, we would need to:
-
-1. Restructure this repository to match the official plugin repository format
-2. Add `source/reorder_audio_streams_by_language_set_default/` directory structure
-3. Create `config.json` in the root
-4. Set up GitHub Actions to generate `repo.json`
-
-Let me know if you'd like me to create this structure instead.
+---
 
 ## Troubleshooting
 
