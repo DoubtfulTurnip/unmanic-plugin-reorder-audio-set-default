@@ -14,7 +14,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# Don't ignore lib/ directory for Unmanic plugin structure
+# lib/
 lib64/
 parts/
 sdist/
