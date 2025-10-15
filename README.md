@@ -1,5 +1,7 @@
 # Unmanic Plugin: Re-order Audio Streams by Language and Set Default
 
+**Status:** ✅ **Working and Tested**
+
 A modified version of the original [reorder_audio_streams_by_language](https://github.com/Unmanic/plugin.reorder_audio_streams_by_language) plugin that fixes a critical limitation.
 
 ## The Problem This Solves
@@ -94,17 +96,26 @@ This ensures all your media files have both:
 
 ## Example Scenarios
 
-### Scenario 1: Order Wrong, No Default Flag
-- **Current:** Japanese (no flag), English (no flag)
+### Scenario 1: Order Wrong, Default on Wrong Track
+- **Current:** Japanese (default ✓), English (no flag)
+- **Action:** Reorder streams AND set default flag
 - **Result:** English (default ✓), Japanese (no flag)
 
-### Scenario 2: Order Correct, No Default Flag ⭐ **NEW BEHAVIOR**
-- **Current:** English (no flag), Japanese (no flag)
+### Scenario 2: Order Correct, Default on Wrong Track ⭐ **NEW BEHAVIOR**
+- **Current:** English (no flag), Japanese (default ✓)
+- **Action:** Keep order, fix default flag
 - **Result:** English (default ✓), Japanese (no flag)
 - **Original plugin would skip this file!** ❌
 
-### Scenario 3: Order Correct, Default Flag Set
+### Scenario 3: Order Correct, No Default Flag Set ⭐ **NEW BEHAVIOR**
+- **Current:** English (no flag), Japanese (no flag)
+- **Action:** Keep order, set default flag
+- **Result:** English (default ✓), Japanese (no flag)
+- **Original plugin would skip this file!** ❌
+
+### Scenario 4: Already Perfect
 - **Current:** English (default ✓), Japanese (no flag)
+- **Action:** None
 - **Result:** File skipped (no processing needed)
 
 ## Requirements
