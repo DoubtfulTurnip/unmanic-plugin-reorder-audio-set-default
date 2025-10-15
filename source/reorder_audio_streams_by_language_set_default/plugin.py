@@ -272,12 +272,16 @@ class PluginStreamMapper(StreamMapper):
         Check if the first audio stream matching the search string has the default disposition set.
         Returns True if the default flag needs to be set, False if it's already correct.
         """
-        if not self.file_probe or not self.file_probe.get('streams'):
+        if not self.probe:
+            return False
+
+        probe_streams = self.probe.get('streams')
+        if not probe_streams:
             return False
 
         # Find the first audio stream that matches our search string
         first_matching_audio_index = None
-        for idx, stream in enumerate(self.file_probe.get('streams', [])):
+        for idx, stream in enumerate(probe_streams):
             if stream.get('codec_type', '').lower() == 'audio':
                 if self.test_tags_for_search_string(stream.get('tags')):
                     first_matching_audio_index = idx
@@ -288,7 +292,7 @@ class PluginStreamMapper(StreamMapper):
             return False
 
         # Check if this stream has the default disposition
-        matching_stream = self.file_probe['streams'][first_matching_audio_index]
+        matching_stream = probe_streams[first_matching_audio_index]
         disposition = matching_stream.get('disposition', {})
 
         # If the stream already has default disposition set to 1, we don't need to process
