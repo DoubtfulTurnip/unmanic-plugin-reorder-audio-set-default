@@ -1,70 +1,58 @@
 # Unmanic Plugin: Re-order Audio Streams by Language and Set Default
 
-This is a modified version of the original [reorder_audio_streams_by_language](https://github.com/Unmanic/plugin.reorder_audio_streams_by_language) plugin.
+A modified version of the original [reorder_audio_streams_by_language](https://github.com/Unmanic/plugin.reorder_audio_streams_by_language) plugin that fixes a critical limitation.
+
+## The Problem This Solves
+
+The original plugin **skips files** where the desired language audio is already in the first position, even if the **default flag** is not set. This is a common issue with anime collections where English audio is listed first but not marked as the default track.
 
 ## Key Difference
 
-**Unlike the original plugin**, this version will process files even when the desired language audio stream is already in the first position, as long as the **default disposition flag** is not set.
+**Original Plugin:**
+- ❌ Skips files if the language order is already correct
+- ❌ Doesn't check or set the default disposition flag
+- ❌ Leaves anime with English audio first but no default flag untouched
 
-## Use Case
-
-This plugin is particularly useful for anime collections or other media where:
-- The English (or preferred language) audio is already the first audio stream
-- BUT the default flag has not been set
-- The original plugin would skip these files, leaving them without the default audio track properly marked
+**This Modified Plugin:**
+- ✅ Processes files even when the language order is correct
+- ✅ Checks if the default disposition flag is set
+- ✅ Sets the default flag on the first matching audio stream
+- ✅ Fixes anime collections with correct order but missing default flag
 
 ## Features
 
 - Re-orders audio streams to prioritize a specified language
-- Sets the default disposition flag on the first matching audio stream
+- **Always sets the default disposition flag** on the first matching audio stream
 - Processes files even when order is correct but default flag is missing
 - Supports manual language specification or automatic detection via Radarr/Sonarr
 - Uses FFmpeg for stream manipulation (copy mode - no re-encoding)
 
 ## Installation
 
-### Option 1: Install from Zip File (Easiest) ⭐
+### Download & Install
 
-1. Download the plugin zip file:
+1. **Download the plugin:**
    - **[Download reorder_audio_streams_by_language_set_default.zip](https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default/raw/master/reorder_audio_streams_by_language_set_default.zip)**
 
-2. In Unmanic UI, go to **Settings** → **Plugins**
-3. Click **"Install Plugin from File"** (or similar button)
-4. Select the downloaded zip file
-5. Click **Install**
-6. Enable and configure the plugin (Search String = `eng`)
+2. **Install in Unmanic:**
+   - Open Unmanic Web UI
+   - Go to **Settings** → **Plugins**
+   - Click **"Install Plugin from File"** or **"Upload Plugin"**
+   - Select the downloaded `reorder_audio_streams_by_language_set_default.zip` file
+   - Click **Install**
 
-### Option 2: Install via Repository (If UI method doesn't work)
+3. **Enable and Configure:**
+   - Find **"Re-order audio streams by language and set default"** in your plugin list
+   - Toggle it **ON**
+   - Click the ⚙️ **settings icon**
+   - Set **Search String** to `eng` (or your preferred language code)
+   - (Optional) Configure Radarr/Sonarr integration if needed
+   - Click **Save**
 
-1. In Unmanic, go to **Settings** → **Plugins** → **Install Plugin from Repo**
-2. Click **ADD REPOSITORY**
-3. Enter the repository URL:
-   ```
-   https://raw.githubusercontent.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default/repo/repo.json
-   ```
-4. Click **SAVE**
-5. Find **"Re-order audio streams by language and set default"** in the plugin list
-6. Click **INSTALL**
-7. Enable and configure the plugin
-
-### Option 3: Manual Installation
-
-1. SSH into your Unmanic server/container
-2. Navigate to your Unmanic plugins directory (usually `/config/plugins`)
-3. Clone the plugin from the source directory:
-   ```bash
-   git clone --recursive https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default.git temp_clone
-   cd temp_clone
-   git submodule update --init --recursive
-   cp -r source/reorder_audio_streams_by_language_set_default /config/plugins/
-   cd ..
-   rm -rf temp_clone
-   ```
-
-4. Restart Unmanic
-5. Enable the plugin in Settings → Plugins
-
-**See [INSTALLATION.md](INSTALLATION.md) for detailed Docker instructions and troubleshooting.**
+4. **Run a Library Scan:**
+   - Go to your Library
+   - Click **Scan**
+   - Files with the correct audio order but missing default flag will now be processed!
 
 ## Configuration
 
@@ -90,12 +78,12 @@ The plugin performs two checks:
 2. **Default Flag Check**: Does the first matching audio stream have the default disposition flag set?
 
 Files will be processed if:
-- The audio stream order needs to be changed, OR
+- The audio stream order needs to be changed, **OR**
 - The default flag is not set on the first matching audio stream
 
 This ensures all your media files have both:
-- Correct audio stream order
-- Default flag properly set
+- ✅ Correct audio stream order
+- ✅ Default flag properly set
 
 ## Technical Details
 
@@ -107,37 +95,48 @@ This ensures all your media files have both:
 ## Example Scenarios
 
 ### Scenario 1: Order Wrong, No Default Flag
-- Current: Japanese (no flag), English (no flag)
-- Result: English (default), Japanese (no flag)
+- **Current:** Japanese (no flag), English (no flag)
+- **Result:** English (default ✓), Japanese (no flag)
 
-### Scenario 2: Order Correct, No Default Flag ⭐ (This is the new behavior!)
-- Current: English (no flag), Japanese (no flag)
-- Result: English (default), Japanese (no flag)
-- **Original plugin would skip this file!**
+### Scenario 2: Order Correct, No Default Flag ⭐ **NEW BEHAVIOR**
+- **Current:** English (no flag), Japanese (no flag)
+- **Result:** English (default ✓), Japanese (no flag)
+- **Original plugin would skip this file!** ❌
 
 ### Scenario 3: Order Correct, Default Flag Set
-- Current: English (default), Japanese (no flag)
-- Result: File skipped (no processing needed)
+- **Current:** English (default ✓), Japanese (no flag)
+- **Result:** File skipped (no processing needed)
 
 ## Requirements
 
+- Unmanic (any recent version)
 - Python dependencies (installed automatically by Unmanic):
   - pyarr>=5.2.0
   - pycountry>=24.6.1
+
+## Troubleshooting
+
+See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues and solutions, including:
+- Plugin doesn't appear after installation
+- Docker permissions issues on TrueNAS/Unraid
+- Manual installation methods
 
 ## Credits
 
 - Original plugin by Josh.5 (jsunnex@gmail.com)
 - Modified to add default flag checking functionality
+- Based on [unmanic.plugin.reorder_audio_streams_by_language](https://github.com/Unmanic/plugin.reorder_audio_streams_by_language)
 
 ## License
 
 GNU General Public License v3.0
 
-See LICENSE file for details.
+See [LICENSE](LICENSE) file for details.
 
 ## Support
 
-For issues specific to this modified version, please open an issue in this repository.
+For issues with this modified version:
+- Open an issue on [GitHub](https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default/issues)
 
-For general Unmanic plugin support, visit the [Unmanic Discord](https://unmanic.app/discord).
+For general Unmanic support:
+- Visit the [Unmanic Discord](https://unmanic.app/discord)
