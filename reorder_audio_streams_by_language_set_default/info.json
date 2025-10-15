@@ -1,0 +1,20 @@
+{
+    "author": "Modified from Josh.5 original",
+    "compatibility": [
+        1,
+        2
+    ],
+    "description": "Re-order audio streams by language AND set default flag. Processes files even when order is correct but default flag is missing.",
+    "icon": "https://raw.githubusercontent.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default/master/icon.png",
+    "id": "reorder_audio_streams_by_language_set_default",
+    "name": "Re-order audio streams by language and set default",
+    "platform": [
+        "all"
+    ],
+    "priorities": {
+        "on_library_management_file_test": 99,
+        "on_worker_process": 2
+    },
+    "tags": "audio,ffmpeg,library file test,default disposition",
+    "version": "1.0.0"
+}
