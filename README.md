@@ -23,7 +23,18 @@ This plugin is particularly useful for anime collections or other media where:
 
 ## Installation
 
-### Option 1: Install via Unmanic UI (Recommended)
+### Option 1: Install from Zip File (Easiest) ⭐
+
+1. Download the plugin zip file:
+   - **[Download reorder_audio_streams_by_language_set_default.zip](https://github.com/DoubtfulTurnip/unmanic-plugin-reorder-audio-set-default/raw/master/reorder_audio_streams_by_language_set_default.zip)**
+
+2. In Unmanic UI, go to **Settings** → **Plugins**
+3. Click **"Install Plugin from File"** (or similar button)
+4. Select the downloaded zip file
+5. Click **Install**
+6. Enable and configure the plugin (Search String = `eng`)
+
+### Option 2: Install via Repository (If UI method doesn't work)
 
 1. In Unmanic, go to **Settings** → **Plugins** → **Install Plugin from Repo**
 2. Click **ADD REPOSITORY**
@@ -36,7 +47,7 @@ This plugin is particularly useful for anime collections or other media where:
 6. Click **INSTALL**
 7. Enable and configure the plugin
 
-### Option 2: Manual Installation
+### Option 3: Manual Installation
 
 1. SSH into your Unmanic server/container
 2. Navigate to your Unmanic plugins directory (usually `/config/plugins`)
