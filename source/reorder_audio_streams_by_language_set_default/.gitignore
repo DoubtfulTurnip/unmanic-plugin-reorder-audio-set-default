@@ -1,0 +1,4 @@
+settings.json
+site-packages/
+__pycache__/
+*.pyc
