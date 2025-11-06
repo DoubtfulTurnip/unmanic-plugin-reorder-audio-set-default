@@ -121,9 +121,9 @@ This ensures all your media files have both:
 ## Requirements
 
 - Unmanic (any recent version)
-- Python dependencies (installed automatically by Unmanic):
-  - pyarr>=5.2.0
-  - pycountry>=24.6.1
+- Python dependencies (bundled in the plugin zip):
+  - pyarr==5.2.0
+  - pycountry==24.6.1
 
 ## Troubleshooting
 
@@ -132,11 +132,21 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues and solutions, in
 - Docker permissions issues on TrueNAS/Unraid
 - Manual installation methods
 
-## Credits
+## Credits & Acknowledgments
 
-- Original plugin by Josh.5 (jsunnex@gmail.com)
-- Modified to add default flag checking functionality
-- Based on [unmanic.plugin.reorder_audio_streams_by_language](https://github.com/Unmanic/plugin.reorder_audio_streams_by_language)
+**This plugin is a modified version** of the excellent [reorder_audio_streams_by_language](https://github.com/Unmanic/plugin.reorder_audio_streams_by_language) plugin created by **Josh.5** (jsunnex@gmail.com).
+
+### What's Changed
+- Added default disposition flag checking and setting
+- Modified logic to process files even when stream order is already correct
+- Bundled Python dependencies for easier deployment
+
+### Special Thanks
+Huge thanks to **Josh.5** for creating the original plugin and the entire Unmanic ecosystem. This modification wouldn't exist without that foundation.
+
+**Original Plugin Repository:** https://github.com/Unmanic/plugin.reorder_audio_streams_by_language
+
+**Modified By:** DoubtfulTurnip
 
 ## License
 
