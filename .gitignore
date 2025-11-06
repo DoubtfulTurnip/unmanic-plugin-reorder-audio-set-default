@@ -18,5 +18,8 @@ Thumbs.db
 # Local documentation
 CLAUDE.md
 
+# Internal scripts (not for distribution)
+check-audio-streams.sh
+
 # Build artifacts
 site-packages/
