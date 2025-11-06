@@ -5,11 +5,12 @@
     Written by:               Josh.5 <jsunnex@gmail.com>
     Date:                     23 March 2021, (8:06 PM)
 
-    Modified by:              [Your Name]
+    Modified by:              DoubtfulTurnip
     Date:                     14 October 2025
 
     Modifications:            - Added check for default disposition flag
                               - Process files even when audio order is correct but default flag is missing
+                              - Bundled Python dependencies for easier deployment
 
     Copyright:
         Copyright (C) 2021 Josh Sunnex
@@ -279,6 +280,10 @@ class PluginStreamMapper(StreamMapper):
         if not probe_streams:
             return False
 
+        # Count audio streams for logging
+        audio_streams = [s for s in probe_streams if s.get('codec_type', '').lower() == 'audio']
+        audio_count = len(audio_streams)
+
         # Find the first audio stream that matches our search string
         first_matching_audio_index = None
         for idx, stream in enumerate(probe_streams):
@@ -289,18 +294,26 @@ class PluginStreamMapper(StreamMapper):
 
         if first_matching_audio_index is None:
             # No matching audio stream found
+            logger.debug(f"No matching audio stream found (searched {audio_count} audio streams)")
             return False
 
         # Check if this stream has the default disposition
         matching_stream = probe_streams[first_matching_audio_index]
         disposition = matching_stream.get('disposition', {})
+        stream_lang = matching_stream.get('tags', {}).get('language', 'unknown')
+
+        # Count streams with default flag set
+        default_count = sum(1 for s in audio_streams if s.get('disposition', {}).get('default', 0) == 1)
+
+        if default_count > 1:
+            logger.warning(f"Found {default_count} audio streams with default flag set (expected 0 or 1)")
 
         # If the stream already has default disposition set to 1, we don't need to process
         if disposition.get('default', 0) == 1:
-            logger.info("First matching audio stream already has default disposition set")
+            logger.info(f"First matching audio stream (language: {stream_lang}, stream #{first_matching_audio_index}) already has default disposition set")
             return False
         else:
-            logger.info("First matching audio stream does NOT have default disposition set - needs processing")
+            logger.info(f"First matching audio stream (language: {stream_lang}, stream #{first_matching_audio_index}) does NOT have default disposition set - needs processing")
             return True
 
     def streams_to_be_reordered(self):
@@ -418,11 +431,15 @@ def on_worker_process(data):
 
     # Get the path to the file
     abspath = data.get("file_in")
+    filename = os.path.basename(abspath)
+
+    logger.info(f"Processing file: {filename}")
 
     # Get file probe
     probe = Probe(logger, allowed_mimetypes=["video"])
     if not probe.file(abspath):
         # File probe failed, skip the rest of this test
+        logger.warning(f"File probe failed for: {filename}")
         return data
 
     # Configure settings object (maintain compatibility with v1 plugins)
@@ -460,5 +477,9 @@ def on_worker_process(data):
         parser = Parser(logger)
         parser.set_probe(probe)
         data["command_progress_parser"] = parser.parse_progress
+
+        logger.info(f"✓ Will process '{filename}' - Reordering audio streams and/or setting default flag")
+    else:
+        logger.info(f"✓ Skipping '{filename}' - No processing required (streams already correct)")
 
     return data
